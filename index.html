@@ -415,50 +415,50 @@
             
             <div class="form-item">
                 <label>会社名・屋号 <span class="badge">必須</span></label>
-                <input class="form-control" type="text" id="companyName" placeholder="例：株式会社 山田商事" value="株式会社 山田商事">
+                <input class="form-control" type="text" id="companyName" placeholder="NJF商事">
             </div>
             <div class="form-item">
                 <label>フリガナ <span class="badge">必須</span></label>
-                <input class="form-control" type="text" id="companyKana" placeholder="カ)ヤマダショウジ" value="カ)ヤマダショウジ">
+                <input class="form-control" type="text" id="companyKana" placeholder="カ)ヤマダショウジ">
             </div>
             
             <!-- 会社住所（郵便番号＋自動入力） -->
             <div class="form-item">
                 <label>会社郵便番号 <span class="badge">必須</span></label>
                 <div class="zip-row">
-                    <input class="form-control" type="text" id="companyZip" placeholder="100-0005" value="100-0005">
+                    <input class="form-control" type="text" id="companyZip" placeholder="100-0005">
                     <span class="zip-auto-btn" onclick="autoFillAddress('company')">自動入力</span>
                 </div>
             </div>
             <div class="form-item">
                 <label>会社住所 <span class="badge">必須</span></label>
-                <input class="form-control" type="text" id="companyAddr1" placeholder="都道府県 市区町村" value="東京都千代田区">
+                <input class="form-control" type="text" id="companyAddr1" placeholder="都道府県 市区町村">
             </div>
             <div class="form-item">
                 <label>番地・建物名 <span class="badge">必須</span></label>
-                <input class="form-control" type="text" id="companyAddr2" placeholder="丸の内1-1-1 東京ビル5F" value="丸の内1-1-1 東京ビル5F">
+                <input class="form-control" type="text" id="companyAddr2" placeholder="丸の内1-1-1 東京ビル5F" >
             </div>
 
             <!-- 担当者情報 -->
             <div class="form-item">
                 <label>ご担当者様 <span class="badge">必須</span></label>
                 <div style="display: flex; gap: 8px;">
-                    <input class="form-control" type="text" id="contactLastName" placeholder="姓" value="山田" style="width:50%;">
-                    <input class="form-control" type="text" id="contactFirstName" placeholder="名" value="太郎" style="width:50%;">
+                    <input class="form-control" type="text" id="contactLastName" placeholder="姓" style="width:50%;">
+                    <input class="form-control" type="text" id="contactFirstName" placeholder="名"  style="width:50%;">
                 </div>
                 <div style="display: flex; gap: 8px; margin-top: 6px;">
-                    <input class="form-control" type="text" id="contactLastNameKana" placeholder="セイ" value="ヤマダ" style="width:50%;">
-                    <input class="form-control" type="text" id="contactFirstNameKana" placeholder="メイ" value="タロウ" style="width:50%;">
+                    <input class="form-control" type="text" id="contactLastNameKana" placeholder="セイ"  style="width:50%;">
+                    <input class="form-control" type="text" id="contactFirstNameKana" placeholder="メイ" style="width:50%;">
                 </div>
             </div>
 
             <div class="form-item">
                 <label>メールアドレス <span class="badge">必須</span></label>
-                <input class="form-control" type="email" id="email" placeholder="example@njfregi.co.jp" value="t.yamada@example.jp">
+                <input class="form-control" type="email" id="email" placeholder="example@njfregi.co.jp" >
             </div>
             <div class="form-item">
                 <label>電話番号 <span class="badge">必須</span></label>
-                <input class="form-control" type="tel" id="phone" placeholder="03-1234-5678" value="03-1234-5678">
+                <input class="form-control" type="tel" id="phone" placeholder="03-1234-5678" >
             </div>
 
             <!-- ===== 利用店舗情報 ===== -->
@@ -471,32 +471,32 @@
 
             <div class="form-item">
                 <label>店舗名 <span class="badge">必須</span></label>
-                <input class="form-control" type="text" id="storeName" placeholder="例：山田商事 丸の内店" value="山田商事 丸の内店">
+                <input class="form-control" type="text" id="storeName" placeholder="NJF商事 丸の内店">
             </div>
             <div class="form-item">
                 <label>店舗郵便番号 <span class="badge">必須</span></label>
                 <div class="zip-row">
-                    <input class="form-control" type="text" id="storeZip" placeholder="100-0005" value="100-0005">
+                    <input class="form-control" type="text" id="storeZip" placeholder="100-0005">
                     <span class="zip-auto-btn" onclick="autoFillAddress('store')">自動入力</span>
                 </div>
             </div>
             <div class="form-item">
                 <label>店舗住所 <span class="badge">必須</span></label>
-                <input class="form-control" type="text" id="storeAddr1" placeholder="都道府県 市区町村" value="東京都千代田区">
+                <input class="form-control" type="text" id="storeAddr1" placeholder="都道府県 市区町村">
             </div>
             <div class="form-item">
                 <label>番地・建物名 <span class="badge">必須</span></label>
-                <input class="form-control" type="text" id="storeAddr2" placeholder="丸の内1-1-1 東京ビル5F" value="丸の内1-1-1 東京ビル5F">
+                <input class="form-control" type="text" id="storeAddr2" placeholder="丸の内1-1-1 東京ビル5F" >
             </div>
             <div class="form-item">
                 <label>店舗電話番号 <span class="badge">必須</span></label>
-                <input class="form-control" type="tel" id="storePhone" placeholder="03-1234-5678" value="03-1234-5678">
+                <input class="form-control" type="tel" id="storePhone" placeholder="03-1234-5678" >
             </div>
 
-            <!-- 利用目的 -->
+            <!-- 業態種類 -->
             <div class="form-item">
-                <label>ご利用目的・備考 <span class="badge optional">任意</span></label>
-                <textarea class="form-control" id="purpose" placeholder="例：店舗管理の効率化のため">レジ周りの一元管理を希望</textarea>
+                <label>業態種類 <span class="badge">必須</span></label>
+                <textarea class="form-control" id="purpose" placeholder="居酒屋、中華、物産店</textarea>
             </div>
 
             <!-- 規約同意（クリックでモーダル表示） -->
