@@ -260,9 +260,17 @@
         }
         .company-name {
             margin-top: 16px;
+            text-align: center;
+            line-height: 1.4;
+        }
+        .company-name .name {
             font-size: 12px;
             color: #98a9b9;
-            text-align: center;
+        }
+        .company-name .address {
+            font-size: 11px;
+            color: #98a9b9;
+            margin-top: 4px;
         }
         /* 確認画面用 */
         .confirm-item {
@@ -412,9 +420,9 @@
             <div class="form-item">
                 <label>会社郵便番号 <span class="badge">必須</span></label>
                 <div class="zip-row">
-    <input class="form-control" type="text" id="companyZip" placeholder="100-0005" value="100-0005">
-    <span class="zip-auto-btn" onclick="autoFillAddress('company')">自動入力</span>
-</div>
+                    <input class="form-control" type="text" id="companyZip" placeholder="100-0005" value="100-0005">
+                    <span class="zip-auto-btn" onclick="autoFillAddress('company')">自動入力</span>
+                </div>
             </div>
             <div class="form-item">
                 <label>会社住所 <span class="badge">必須</span></label>
@@ -462,9 +470,9 @@
             <div class="form-item">
                 <label>店舗郵便番号 <span class="badge">必須</span></label>
                 <div class="zip-row">
-    <input class="form-control" type="text" id="storeZip" placeholder="100-0005" value="100-0005">
-    <span class="zip-auto-btn" onclick="autoFillAddress('store')">自動入力</span>
-</div>
+                    <input class="form-control" type="text" id="storeZip" placeholder="100-0005" value="100-0005">
+                    <span class="zip-auto-btn" onclick="autoFillAddress('store')">自動入力</span>
+                </div>
             </div>
             <div class="form-item">
                 <label>店舗住所 <span class="badge">必須</span></label>
@@ -597,7 +605,7 @@
             <p>ユーザーは、ご自身の個人情報について、利用目的の通知、開示、訂正、追加、削除、または利用停止などを請求することができます。請求の方法については、下記お問い合わせ先までご連絡ください。</p>
             
             <h4>6. お問い合わせ先</h4>
-            <p>新日本富士アシスト株式会社<br>〒100-0005 東京都千代田区丸の内1-1-1<br>TEL: 03-1234-5678<br>Email: privacy@njfregi.co.jp</p>
+            <p>新日本富士アシスト株式会社<br>〒110-0016 東京都台東区台東4-31-7-203<br>TEL: 03-1234-5678<br>Email: privacy@njfregi.co.jp</p>
         </div>
     </div>
 </div>
@@ -654,42 +662,65 @@
     </div>
 </div>
 
+<!-- フッター（会社名＋住所） -->
 <div class="company-name">
-    <div>新日本富士アシスト株式会社</div>
-    <div style="font-size: 11px; margin-top: 4px;">〒110-0016 東京都台東区台東4-31-7-203</div>
+    <div class="name">新日本富士アシスト株式会社</div>
+    <div class="address">〒110-0016 東京都台東区台東4-31-7-203</div>
 </div>
 
 <script>
-    // 郵便番号自動入力（簡易版デモ）
+    // ==================== 郵便番号自動入力（実際のAPI使用）====================
     function autoFillAddress(type) {
         const zip = document.getElementById(type + 'Zip').value.replace('-', '');
-        // デモ用：郵便番号の先頭数桁で住所を仮生成
-        let addr1 = '';
-        if (zip.startsWith('100')) addr1 = '東京都千代田区';
-        else if (zip.startsWith('150')) addr1 = '東京都渋谷区';
-        else if (zip.startsWith('530')) addr1 = '大阪府大阪市北区';
-        else addr1 = '東京都新宿区';
         
-        document.getElementById(type + 'Addr1').value = addr1;
-        document.getElementById(type + 'Addr2').value = '○○ビル';
+        if (zip.length < 7) {
+            alert('郵便番号は7桁で入力してください');
+            return;
+        }
+        
+        // ボタンのテキストを一時的に変更
+        const btn = event.target;
+        const originalText = btn.innerText;
+        btn.innerText = '検索中...';
+        
+        // 日本の郵便番号APIを使用
+        fetch('https://zipcloud.ibsnet.co.jp/api/search?zipcode=' + zip)
+            .then(response => response.json())
+            .then(data => {
+                btn.innerText = originalText;
+                
+                if (data.results) {
+                    const result = data.results[0];
+                    const address = result.address1 + result.address2 + result.address3;
+                    document.getElementById(type + 'Addr1').value = address;
+                    document.getElementById(type + 'Addr2').value = ''; // 番地・建物は空に
+                } else {
+                    alert('住所が見つかりませんでした。郵便番号を確認してください。');
+                }
+            })
+            .catch(error => {
+                btn.innerText = originalText;
+                alert('住所検索に失敗しました。もう一度お試しください。');
+                console.error(error);
+            });
     }
 
-    // 会社住所を店舗にコピー
+    // ==================== 会社住所を店舗にコピー ====================
     function copyCompanyAddress() {
         document.getElementById('storeZip').value = document.getElementById('companyZip').value;
         document.getElementById('storeAddr1').value = document.getElementById('companyAddr1').value;
         document.getElementById('storeAddr2').value = document.getElementById('companyAddr2').value;
     }
 
-    // モーダル表示
+    // ==================== モーダル表示/非表示 ====================
     function showModal(type) {
         document.getElementById(type + 'Modal').style.display = 'block';
-        document.body.style.overflow = 'hidden'; // 背景スクロール禁止
+        document.body.style.overflow = 'hidden';
     }
 
     function closeModal(type) {
         document.getElementById(type + 'Modal').style.display = 'none';
-        document.body.style.overflow = ''; // スクロール復活
+        document.body.style.overflow = '';
     }
 
     // モーダル外クリックで閉じる
@@ -700,7 +731,7 @@
         }
     }
 
-    // 入力画面 → 確認画面
+    // ==================== 入力画面 → 確認画面 ====================
     function goToConfirm() {
         // 簡易バリデーション（必須チェック）
         const requiredIds = [
@@ -751,7 +782,7 @@
         document.getElementById('step2Label').classList.add('active');
     }
 
-    // 確認画面 → 入力画面
+    // ==================== 確認画面 → 入力画面 ====================
     function backToInput() {
         document.getElementById('inputSection').classList.remove('hidden');
         document.getElementById('confirmSection').classList.add('hidden');
@@ -759,7 +790,7 @@
         document.getElementById('step2Label').classList.remove('active');
     }
 
-    // 最終送信（GASにデータ送信）
+    // ==================== 最終送信（GASにデータ送信）====================
     function submitForm() {
         const data = {
             applyType: document.querySelector('input[name="applyType"]:checked').value,
@@ -793,11 +824,11 @@
         btn.disabled = true;
         btn.innerText = '送信中...';
 
-        // GASのURL（後で差し替え）
+        // GASのURL（あなたのGASのURLに変更してください）
         const gasUrl = 'https://script.google.com/macros/s/AKfycbwK3-qbUPMiapAPO07jef1dgFEoPxQwwKFaSQwZCfnlVdhz9v96oDRRs9FBvaw_fG9S8Q/exec';
 
         // デモモード：GASがなくても動作確認できるように
-        if (gasUrl.includes('【')) {
+        if (gasUrl.includes('【ここに')) {
             setTimeout(() => {
                 alert('【デモモード】送信が完了しました。\n\n実際の運用時はGASのURLを設定してください。');
                 backToInput();
