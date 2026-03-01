@@ -737,56 +737,91 @@
         }
     }
 
-    // ==================== 入力画面 → 確認画面 ====================
-    function goToConfirm() {
-        // 簡易バリデーション（必須チェック）
-        const requiredIds = [
-            'companyName', 'companyKana', 'companyZip', 'companyAddr1', 'companyAddr2',
-            'contactLastName', 'contactFirstName', 'email', 'phone',
-            'storeName', 'storeZip', 'storeAddr1', 'storeAddr2', 'storePhone'
-        ];
-        for (let id of requiredIds) {
-            const el = document.getElementById(id);
-            if (!el || !el.value.trim()) {
-                alert('必須項目をすべて入力してください');
-                return;
-            }
-        }
-        if (!document.getElementById('agreeTerms').checked) {
-            alert('規約に同意してください');
+  // ==================== 输入画面 → 确认画面（调试版）====================
+function goToConfirm() {
+    console.log('===== 开始执行 goToConfirm =====');
+    
+    // 检查所有必需元素是否存在
+    const requiredIds = [
+        'companyName', 'companyKana', 'companyZip', 'companyAddr1', 'companyAddr2',
+        'contactLastName', 'contactFirstName', 'email', 'phone',
+        'storeName', 'storeZip', 'storeAddr1', 'storeAddr2', 'storePhone'
+    ];
+    
+    // 检查每个元素是否存在
+    for (let id of requiredIds) {
+        const el = document.getElementById(id);
+        if (!el) {
+            console.error('错误：找不到元素 id=' + id);
+            alert('系统错误：找不到输入框 ' + id);
             return;
         }
-
-        // 契約会社情報の表示
-        document.getElementById('confirmCompanyName').innerText = 
-            document.getElementById('companyName').value + '（' + document.getElementById('companyKana').value + '）';
-        document.getElementById('confirmCompanyAddr').innerText = 
-            '〒' + document.getElementById('companyZip').value + ' ' + 
-            document.getElementById('companyAddr1').value + ' ' + 
-            document.getElementById('companyAddr2').value;
-        document.getElementById('confirmContact').innerText = 
-            document.getElementById('contactLastName').value + ' ' + 
-            document.getElementById('contactFirstName').value + ' 様' +
-            '（' + document.getElementById('contactLastNameKana').value + ' ' + 
-            document.getElementById('contactFirstNameKana').value + '）';
-        document.getElementById('confirmEmail').innerText = document.getElementById('email').value;
-        document.getElementById('confirmPhone').innerText = document.getElementById('phone').value;
-
-        // 店舗情報の表示
-        document.getElementById('confirmStoreName').innerText = document.getElementById('storeName').value;
-        document.getElementById('confirmStoreAddr').innerText = 
-            '〒' + document.getElementById('storeZip').value + ' ' + 
-            document.getElementById('storeAddr1').value + ' ' + 
-            document.getElementById('storeAddr2').value;
-        document.getElementById('confirmStorePhone').innerText = document.getElementById('storePhone').value;
-        document.getElementById('confirmPurpose').innerText = document.getElementById('purpose').value || '（記載なし）';
-
-        // 画面切替
-        document.getElementById('inputSection').classList.add('hidden');
-        document.getElementById('confirmSection').classList.remove('hidden');
-        document.getElementById('step1Label').classList.remove('active');
-        document.getElementById('step2Label').classList.add('active');
+        console.log('✅ 找到元素：' + id + ' = ' + el.value);
     }
+    
+    // 检查同意复选框
+    const agreeEl = document.getElementById('agreeTerms');
+    if (!agreeEl) {
+        console.error('错误：找不到 agreeTerms 元素');
+        alert('系统错误：找不到同意复选框');
+        return;
+    }
+    
+    // 检查确认画面元素
+    const confirmIds = [
+        'confirmCompanyName', 'confirmCompanyAddr', 'confirmContact',
+        'confirmEmail', 'confirmPhone', 'confirmStoreName',
+        'confirmStoreAddr', 'confirmStorePhone', 'confirmPurpose'
+    ];
+    
+    for (let id of confirmIds) {
+        const el = document.getElementById(id);
+        if (!el) {
+            console.error('错误：找不到确认画面元素 id=' + id);
+            alert('系统错误：找不到确认画面元素 ' + id);
+            return;
+        }
+    }
+    
+    // 验证通过，开始填充确认画面
+    console.log('所有元素检查通过，开始填充确认画面');
+    
+    // 契约会社情報
+    document.getElementById('confirmCompanyName').innerText = 
+        document.getElementById('companyName').value + '（' + document.getElementById('companyKana').value + '）';
+    
+    document.getElementById('confirmCompanyAddr').innerText = 
+        '〒' + document.getElementById('companyZip').value + ' ' + 
+        document.getElementById('companyAddr1').value + ' ' + 
+        document.getElementById('companyAddr2').value;
+    
+    document.getElementById('confirmContact').innerText = 
+        document.getElementById('contactLastName').value + ' ' + 
+        document.getElementById('contactFirstName').value + ' 様' +
+        '（' + document.getElementById('contactLastNameKana').value + ' ' + 
+        document.getElementById('contactFirstNameKana').value + '）';
+    
+    document.getElementById('confirmEmail').innerText = document.getElementById('email').value;
+    document.getElementById('confirmPhone').innerText = document.getElementById('phone').value;
+
+    // 店舗情報
+    document.getElementById('confirmStoreName').innerText = document.getElementById('storeName').value;
+    document.getElementById('confirmStoreAddr').innerText = 
+        '〒' + document.getElementById('storeZip').value + ' ' + 
+        document.getElementById('storeAddr1').value + ' ' + 
+        document.getElementById('storeAddr2').value;
+    document.getElementById('confirmStorePhone').innerText = document.getElementById('storePhone').value;
+    document.getElementById('confirmPurpose').innerText = document.getElementById('purpose').value || '（記載なし）';
+
+    // 画面切替
+    console.log('准备切换画面');
+    document.getElementById('inputSection').classList.add('hidden');
+    document.getElementById('confirmSection').classList.remove('hidden');
+    document.getElementById('step1Label').classList.remove('active');
+    document.getElementById('step2Label').classList.add('active');
+    
+    console.log('画面切换完成');
+}
 
     // ==================== 確認画面 → 入力画面 ====================
     function backToInput() {
