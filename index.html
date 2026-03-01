@@ -114,25 +114,33 @@
             outline: none;
             box-shadow: 0 0 0 3px rgba(30,60,79,0.1);
         }
-        /* 让 placeholder 文字显示为浅灰色 */
+       /* 让 placeholder 文字显示为浅灰色 */
 .form-control::placeholder {
-    color: #cccccc;  /* 更浅的灰色 */
+    color: #cccccc;  /* 浅灰色 */
     opacity: 1;
-    font-size: 14px;  /* 稍微小一点 */
+    font-size: 14px;
 }
 
 /* 针对不同的浏览器 */
 .form-control::-webkit-input-placeholder {
-    color: #b0b8c5;
+    color: #cccccc;
     opacity: 1;
+    font-size: 14px;
 }
 .form-control::-moz-placeholder {
-    color: #b0b8c5;
+    color: #cccccc;
     opacity: 1;
+    font-size: 14px;
 }
 .form-control:-ms-input-placeholder {
-    color: #b0b8c5;
+    color: #cccccc;
     opacity: 1;
+    font-size: 14px;
+}
+.form-control::-ms-input-placeholder {
+    color: #cccccc;
+    opacity: 1;
+    font-size: 14px;
 }
         .radio-group {
             background-color: #f4f7fa;
