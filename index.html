@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>NJFREGI 利用申込み｜新日本富士アシスト</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Noto Sans", "Helvetica Neue", sans-serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0 32px 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 480px; /* H5 適正幅 */
+            background-color: #ffffff;
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            overflow: hidden;
+        }
+        /* 和風・シンプルヘッダー */
+        .page-header {
+            background-color: #1e3c4f; /* 日式深藍綠 */
+            color: white;
+            padding: 28px 20px 20px 20px;
+            text-align: center;
+        }
+        .page-header .logo {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+        }
+        .page-header .logo small {
+            font-size: 13px;
+            font-weight: 300;
+            opacity: 0.9;
+            display: block;
+            margin-top: 4px;
+        }
+        .page-header .title {
+            font-size: 18px;
+            font-weight: 400;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            padding-top: 14px;
+            margin-top: 10px;
+        }
+        /* 進行状況ステップ (和風意匠) */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            background-color: #f9fbfd;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e9ed;
+            font-size: 13px;
+            color: #7b8a97;
+        }
+        .step-indicator .active {
+            color: #1e3c4f;
+            font-weight: 600;
+            border-bottom: 2px solid #1e3c4f;
+            padding-bottom: 6px;
+            margin-bottom: -6px;
+        }
+        /* 申込みフォーム */
+        .form-section {
+            padding: 24px 20px 32px 20px;
+        }
+        .form-item {
+            margin-bottom: 22px;
+        }
+        .form-item label {
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            font-weight: 600;
+            color: #2d3e4f;
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+        .form-item label .badge {
+            background-color: #d54343;
+            color: white;
+            font-size: 11px;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: 10px;
+            line-height: 1.4;
+        }
+        .form-item label .optional {
+            background-color: #9aa9b5;
+            margin-left: 10px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 16px;
+            border: 1px solid #d0d9e0;
+            border-radius: 12px;
+            background-color: #ffffff;
+            transition: 0.15s;
+            -webkit-appearance: none;
+        }
+        .form-control:focus {
+            border-color: #1e3c4f;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(30,60,79,0.1);
+        }
+        textarea.form-control {
+            min-height: 90px;
+            resize: vertical;
+        }
+        .radio-group {
+            background-color: #f4f7fa;
+            border-radius: 16px;
+            padding: 10px 12px;
+            display: flex;
+            gap: 24px;
+        }
+        .radio-group label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 400;
+            font-size: 15px;
+            color: #1e2b36;
+            margin-bottom: 0;
+        }
+        .radio-group input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #1e3c4f;
+        }
+        /* 企業名 など フリガナ補足 */
+        .sub-text {
+            font-size: 12px;
+            color: #6f7e8c;
+            margin-top: 4px;
+            margin-left: 8px;
+        }
+        /* 契約約款同意エリア */
+        .terms-box {
+            background-color: #f2f6f9;
+            border-radius: 18px;
+            padding: 20px 18px;
+            margin: 32px 0 24px;
+            border: 1px solid #dce3ea;
+        }
+        .terms-title {
+            font-weight: 600;
+            color: #1e3c4f;
+            font-size: 16px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .terms-title span {
+            background-color: #b8c9d9;
+            color: #1e3c4f;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 30px;
+        }
+        .terms-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .terms-link-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 40px;
+            border: 1px solid #cbd5e1;
+            text-decoration: none;
+            color: #1e2b36;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .terms-link-item i {
+            color: #8a9aa8;
+            font-size: 16px;
+        }
+        .agree-check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0 4px;
+        }
+        .agree-check input {
+            width: 20px;
+            height: 20px;
+            accent-color: #1e3c4f;
+        }
+        .agree-check label {
+            font-size: 15px;
+            font-weight: 500;
+            color: #1e2b36;
+        }
+        /* ボタン */
+        .submit-btn {
+            background-color: #1e3c4f;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 18px 20px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 50px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(30,60,79,0.2);
+            transition: 0.1s;
+            margin-top: 12px;
+        }
+        .submit-btn:active {
+            background-color: #14303f;
+            transform: scale(0.98);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+        .submit-btn:disabled {
+            background-color: #b0c0cc;
+            box-shadow: none;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        .footnote {
+            font-size: 12px;
+            color: #7a8a99;
+            text-align: center;
+            margin-top: 20px;
+            border-top: 1px dashed #cdd9e5;
+            padding-top: 18px;
+        }
+        .footnote a {
+            color: #1e3c4f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        /* 簡易フッター */
+        .company-name {
+            margin-top: 16px;
+            font-size: 12px;
+            color: #98a9b9;
+            text-align: center;
+        }
+        /* アイコン代わり (文字) */
+        .icon-arrow {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- ヘッダー (和モダン) -->
+    <div class="page-header">
+        <div class="logo">NJFREGI<span style="font-weight:300; font-size:14px; margin-left:8px;">業務支援システム</span></div>
+        <div class="small" style="font-size:12px; opacity:0.8;">新日本富士アシスト株式会社</div>
+        <div class="title">ご利用お申込み</div>
+    </div>
+
+    <!-- ステップ表示 (申込〜完了) 和風の区切り -->
+    <div class="step-indicator">
+        <span class="active">申込情報</span>
+        <span>確認</span>
+        <span>完了</span>
+    </div>
+
+    <!-- メインフォーム -->
+    <form onsubmit="event.preventDefault(); alert('申込みを受け付けました。（デモ画面）');" class="form-section">
+        <!-- 法人/個人 選択 (ラジオ) 日本式表記 -->
+        <div class="form-item">
+            <label>お申込種別 <span class="badge">必須</span></label>
+            <div class="radio-group">
+                <label><input type="radio" name="applyType" value="corporation" checked> 法人</label>
+                <label><input type="radio" name="applyType" value="individual"> 個人事業主</label>
+            </div>
+        </div>
+
+        <!-- 会社名／屋号 -->
+        <div class="form-item">
+            <label>会社名・屋号 <span class="badge">必須</span></label>
+            <input class="form-control" type="text" placeholder="例：新日本富士アシスト株式会社" value="株式会社 山田商事">
+            <div class="sub-text">※正式名称でご記入ください</div>
+        </div>
+        <!-- フリガナ (和風必須項目) -->
+        <div class="form-item">
+            <label>フリガナ <span class="badge">必須</span></label>
+            <input class="form-control" type="text" placeholder="カ)ヤマダショウジ" value="カ)ヤマダショウジ">
+        </div>
+
+        <!-- ご担当者様 氏名 -->
+        <div class="form-item">
+            <label>ご担当者様 <span class="badge">必須</span></label>
+            <div style="display: flex; gap: 8px;">
+                <input class="form-control" type="text" placeholder="姓" value="山田" style="width:50%;">
+                <input class="form-control" type="text" placeholder="名" value="太郎" style="width:50%;">
+            </div>
+            <div style="display: flex; gap: 8px; margin-top: 6px;">
+                <input class="form-control" type="text" placeholder="セイ" value="ヤマダ" style="width:50%;">
+                <input class="form-control" type="text" placeholder="メイ" value="タロウ" style="width:50%;">
+            </div>
+            <div class="sub-text">上段：漢字、下段：フリガナ</div>
+        </div>
+
+        <!-- メールアドレス -->
+        <div class="form-item">
+            <label>メールアドレス <span class="badge">必須</span></label>
+            <input class="form-control" type="email" placeholder="example@njfregi.co.jp" value="t.yamada@example.jp">
+        </div>
+        <div class="form-item">
+            <label>確認用 <span class="badge">必須</span></label>
+            <input class="form-control" type="email" placeholder="再度入力" value="t.yamada@example.jp">
+        </div>
+
+        <!-- 電話番号 (日本の方形式) -->
+        <div class="form-item">
+            <label>電話番号 <span class="badge">必須</span></label>
+            <input class="form-control" type="tel" placeholder="03-1234-5678" value="03-1234-5678">
+        </div>
+
+        <!-- 住所（日本の都道府県から） -->
+        <div class="form-item">
+            <label>郵便番号 <span class="badge">必須</span></label>
+            <input class="form-control" type="text" placeholder="〒 000-0000" value="100-0005">
+        </div>
+        <div class="form-item">
+            <label>都道府県 <span class="badge">必須</span></label>
+            <select class="form-control">
+                <option>東京都</option><option>大阪府</option><option>北海道</option><option>福岡県</option><option>愛知県</option><option>京都府</option><option>神奈川県</option><option>埼玉県</option><option>千葉県</option><option>その他</option>
+            </select>
+        </div>
+        <div class="form-item">
+            <label>市区町村・番地 <span class="badge">必須</span></label>
+            <input class="form-control" type="text" placeholder="千代田区丸の内1-1-1" value="千代田区丸の内1-1-1">
+        </div>
+        <div class="form-item">
+            <label>建物名・部屋番号 <span class="badge optional">任意</span></label>
+            <input class="form-control" type="text" placeholder="東京ビル 5F">
+        </div>
+
+        <!-- ご利用目的／簡単なヒアリング (和風でもよくある) -->
+        <div class="form-item">
+            <label>ご利用目的・ひとこと備考 <span class="badge optional">任意</span></label>
+            <textarea class="form-control" placeholder="例：店舗管理の効率化のため導入を希望します。">レジ周りの一元管理を希望</textarea>
+        </div>
+
+        <!-- 約款同意ブロック (ここに生成済みの利用条例へのリンク) -->
+        <div class="terms-box">
+            <div class="terms-title">
+                📄 規約・ポリシーの確認
+                <span>必ずお読みください</span>
+            </div>
+
+            <div class="terms-links">
+                <!-- 参照: 先ほど生成したプライバシーポリシー・利用約款を想定したリンク (ダミー) -->
+                <a href="#" class="terms-link-item" onclick="alert('プライバシーポリシー（PDF/別画面）を表示します（デモ）'); return false;">
+                    <span>🔐 NJFREGI プライバシーポリシー</span>
+                    <span class="icon-arrow">›</span>
+                </a>
+                <a href="#" class="terms-link-item" onclick="alert('利用約款（PDF/別画面）を表示します（デモ）'); return false;">
+                    <span>📑 NJFREGI 利用約款</span>
+                    <span class="icon-arrow">›</span>
+                </a>
+                <a href="#" class="terms-link-item" onclick="alert('特定商取引法に基づく表記（デモ）'); return false;">
+                    <span>⚖️ 特定商取引法表示</span>
+                    <span class="icon-arrow">›</span>
+                </a>
+            </div>
+
+            <!-- 同意チェックボックス 日本語明記 -->
+            <div class="agree-check">
+                <input type="checkbox" id="agreeTerms" checked>
+                <label for="agreeTerms">上記の「プライバシーポリシー」「利用約款」に同意する</label>
+            </div>
+            <div style="font-size:12px; color:#4d6677; margin-top:8px; border-left: 3px solid #bbc9d6; padding-left:10px;">
+                ※同意いただけない場合はお申込みをお進めいただけません
+            </div>
+        </div>
+
+        <!-- 申込ボタン (和風、シンプル) -->
+        <button type="submit" class="submit-btn" id="submitBtn">申込み内容を確認する</button>
+
+        <!-- 注意書き -->
+        <div class="footnote">
+            「NJFREGI」は新日本富士アシスト株式会社のサービスです。<br>
+            入力内容について、後日ご担当者様に確認のご連絡をさせていただく場合がございます。
+        </div>
+    </form>
+</div>
+
+<!-- 会社名フッター(日本式) -->
+<div class="company-name">
+    新日本富士アシスト株式会社 ｜ 東京都千代田区…  〒100-0005
+</div>
+
+<!-- 簡易的なバリデーションメモ (デモ用) チェックを外すとボタンが押せない演出 -->
+<script>
+    (function() {
+        const chk = document.getElementById('agreeTerms');
+        const btn = document.getElementById('submitBtn');
+        if (chk && btn) {
+            const toggleBtn = () => {
+                btn.disabled = !chk.checked;
+            };
+            chk.addEventListener('change', toggleBtn);
+            toggleBtn(); // 初期状態: チェックされているのでfalse（有効）
+        }
+    })();
+</script>
+
+<!-- 補足: 実際の動作時は各リンクを生成済みの条例ページに差し替えてください -->
+</body>
+</html>
