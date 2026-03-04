@@ -1,905 +1,654 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>NJFREGI利用申込｜新日本富士アシスト</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Noto Sans", "Helvetica Neue", sans-serif;
-        }
-        body {
-            background-color: #f5f7fa;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 16px 0 32px 0;
-        }
-        .container {
-            width: 100%;
-            max-width: 480px;
-            background-color: #ffffff;
-            border-radius: 24px 24px 0 0;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
-            overflow: hidden;
-        }
-        .page-header {
-            background-color: #1e3c4f;
-            color: white;
-            padding: 28px 20px 20px 20px;
-            text-align: center;
-        }
-        .page-header .logo {
-            font-size: 22px;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-        }
-        .page-header .title {
-            font-size: 18px;
-            font-weight: 400;
-            border-top: 1px solid rgba(255,255,255,0.3);
-            padding-top: 14px;
-            margin-top: 10px;
-        }
-        .step-indicator {
-            display: flex;
-            justify-content: center;
-            gap: 60px;
-            background-color: #f9fbfd;
-            padding: 16px 20px;
-            border-bottom: 1px solid #e5e9ed;
-            font-size: 14px;
-            color: #7b8a97;
-        }
-        .step-indicator .active {
-            color: #1e3c4f;
-            font-weight: 600;
-            border-bottom: 2px solid #1e3c4f;
-            padding-bottom: 6px;
-            margin-bottom: -6px;
-        }
-        .form-section, .confirm-section {
-            padding: 24px 20px 32px 20px;
-        }
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1e3c4f;
-            margin: 24px 0 16px 0;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #dce3ea;
-        }
-        .section-title:first-of-type {
-            margin-top: 0;
-        }
-        .form-item {
-            margin-bottom: 22px;
-        }
-        .form-item label {
-            display: flex;
-            align-items: center;
-            font-size: 15px;
-            font-weight: 600;
-            color: #2d3e4f;
-            margin-bottom: 8px;
-        }
-        .form-item label .badge {
-            background-color: #d54343;
-            color: white;
-            font-size: 11px;
-            font-weight: 500;
-            padding: 2px 8px;
-            border-radius: 20px;
-            margin-left: 10px;
-        }
-        .form-item label .optional {
-            background-color: #9aa9b5;
-        }
-        .form-control {
-            width: 100%;
-            padding: 14px 16px;
-            font-size: 16px;
-            border: 1px solid #d0d9e0;
-            border-radius: 12px;
-            background-color: #ffffff;
-            transition: 0.15s;
-            -webkit-appearance: none;
-        }
-        .form-control:focus {
-            border-color: #1e3c4f;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(30,60,79,0.1);
-        }
-       /* 简化版 - 只保留最基础的 */
-.form-control::placeholder {
-    color: #999999 !important;
-    opacity: 1 !important;
-    font-size: 14px !important;
-}
-        .radio-group {
-            background-color: #f4f7fa;
-            border-radius: 16px;
-            padding: 10px 12px;
-            display: flex;
-            gap: 24px;
-        }
-        .radio-group label {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 400;
-            font-size: 15px;
-            color: #1e2b36;
-            margin-bottom: 0;
-        }
-        .radio-group input[type="radio"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #1e3c4f;
-        }
-        .zip-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-        .zip-row .form-control {
-            flex: 3;
-        }
-        .zip-auto-btn {
-            flex: 1;
-            background-color: #e6edf3;
-            border: 1px solid #cbd5e1;
-            border-radius: 30px;
-            padding: 12px 8px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #1e3c4f;
-            cursor: pointer;
-            white-space: nowrap;
-            text-align: center;
-        }
-        .zip-auto-btn:active {
-            background-color: #d0dceb;
-        }
-        .copy-btn {
-            background-color: #e6edf3;
-            border: 1px solid #cbd5e1;
-            border-radius: 30px;
-            padding: 10px 16px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #1e3c4f;
-            cursor: pointer;
-            margin-top: 8px;
-            display: inline-block;
-        }
-        .copy-btn:active {
-            background-color: #d0dceb;
-        }
-        .terms-box {
-            background-color: #f2f6f9;
-            border-radius: 18px;
-            padding: 20px 18px;
-            margin: 32px 0 24px;
-            border: 1px solid #dce3ea;
-        }
-        .terms-link-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: white;
-            padding: 12px 16px;
-            border-radius: 40px;
-            border: 1px solid #cbd5e1;
-            text-decoration: none;
-            color: #1e2b36;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 10px;
-            cursor: pointer;
-        }
-        .terms-link-item:active {
-            background-color: #f0f4f9;
-        }
-        .agree-check {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 0 4px;
-        }
-        .agree-check input {
-            width: 20px;
-            height: 20px;
-            accent-color: #1e3c4f;
-        }
-        .agree-check label {
-            font-size: 15px;
-            font-weight: 500;
-            color: #1e2b36;
-        }
-        .submit-btn, .confirm-btn, .back-btn {
-            border: none;
-            width: 100%;
-            padding: 18px 20px;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 50px;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: 0.1s;
-            margin-top: 12px;
-        }
-        .submit-btn {
-            background-color: #1e3c4f;
-            color: white;
-            box-shadow: 0 6px 12px rgba(30,60,79,0.2);
-        }
-        .confirm-btn {
-            background-color: #2d5a6e;
-            color: white;
-        }
-        .back-btn {
-            background-color: #b0c0cc;
-            color: white;
-            margin-top: 0;
-        }
-        .submit-btn:active, .confirm-btn:active {
-            transform: scale(0.98);
-        }
-        .submit-btn:disabled {
-            background-color: #b0c0cc;
-            box-shadow: none;
-            pointer-events: none;
-            opacity: 0.6;
-        }
-        .footnote {
-            font-size: 12px;
-            color: #7a8a99;
-            text-align: center;
-            margin-top: 20px;
-            border-top: 1px dashed #cdd9e5;
-            padding-top: 18px;
-        }
-        .company-name {
-            margin-top: 16px;
-            text-align: center;
-            line-height: 1.4;
-        }
-        .company-name .name {
-            font-size: 12px;
-            color: #98a9b9;
-        }
-        .company-name .address {
-            font-size: 11px;
-            color: #98a9b9;
-            margin-top: 4px;
-        }
-        /* 確認画面用 */
-        .confirm-item {
-            background-color: #f8fafc;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-        .confirm-item-label {
-            font-size: 13px;
-            color: #6f7e8c;
-            margin-bottom: 4px;
-        }
-        .confirm-item-value {
-            font-size: 16px;
-            font-weight: 500;
-            color: #1e2b36;
-            word-break: break-word;
-        }
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-        }
-        .button-group .back-btn {
-            width: 40%;
-        }
-        .button-group .confirm-btn {
-            width: 60%;
-        }
-        .hidden {
-            display: none;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NJFREGI レジシステム申込フォーム</title>
 
-        /* モーダル（規約表示用） */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1000;
-            overflow-y: auto;
-        }
-        .modal-content {
-            background-color: white;
-            margin: 20px;
-            padding: 24px 20px;
-            border-radius: 24px;
-            max-width: 480px;
-            position: relative;
-            top: 20px;
-            margin-left: auto;
-            margin-right: auto;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #e5e9ed;
-        }
-        .modal-header h3 {
-            color: #1e3c4f;
-            font-size: 18px;
-        }
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 28px;
-            cursor: pointer;
-            color: #7a8a99;
-            padding: 0 8px;
-        }
-        .modal-body {
-            max-height: 70vh;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-        .modal-body h4 {
-            color: #2d5a6e;
-            margin: 16px 0 8px 0;
-            font-size: 16px;
-        }
-        .modal-body p {
-            font-size: 14px;
-            line-height: 1.6;
-            color: #2d3e4f;
-            margin-bottom: 8px;
-        }
-        .modal-body ul {
-            margin-left: 20px;
-            margin-bottom: 12px;
-        }
-        .modal-body li {
-            font-size: 14px;
-            line-height: 1.6;
-            color: #2d3e4f;
-        }
-    </style>
+  <style>
+    :root{
+      --bg:#f6f7fb; --card:#fff; --text:#111; --muted:#6b7280;
+      --primary:#2563eb; --primary2:#1d4ed8; --ok:#16a34a; --danger:#dc2626;
+      --border:#e5e7eb; --shadow:0 10px 30px rgba(0,0,0,.06);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP","Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;background:var(--bg);color:var(--text);}
+    header{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,#ffffff,#ffffffcc);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+    .wrap{max-width:860px;margin:0 auto;padding:12px 14px 28px}
+    .topbar{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+    .brand{display:flex;flex-direction:column;gap:6px}
+    .brand .title{font-weight:1000;font-size:16px;line-height:1.2}
+    .brand .sub{font-size:12px;color:var(--muted);font-weight:800}
+    .stepBlocks{display:flex;gap:8px;align-items:center;user-select:none}
+    .sb{width:42px;height:28px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--muted);font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center}
+    .sb.done{background:#eef2ff;border-color:#c7d2fe;color:#374151}
+    .sb.active{background:var(--primary);border-color:var(--primary2);color:#fff;box-shadow:0 10px 20px rgba(37,99,235,.18)}
+    .progress{margin-top:10px;height:8px;border-radius:999px;background:#eef2ff;overflow:hidden;border:1px solid #e0e7ff}
+    .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--primary),#7c3aed);transition:width .25s ease}
+
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-top:12px}
+    h2{margin:0 0 10px;font-size:15px;font-weight:1000}
+    .grid{display:grid;gap:10px}
+    @media(min-width:720px){.grid.cols2{grid-template-columns:1fr 1fr;}}
+    label{font-size:12px;color:var(--muted);display:block;margin:0 0 6px;font-weight:800}
+    input,select,textarea{width:100%;padding:12px 12px;border-radius:12px;border:1px solid var(--border);background:#fff;outline:none;font-size:14px;font-weight:800}
+    input[readonly]{background:#f9fafb}
+    input:focus,select:focus,textarea:focus{border-color:#c7d2fe;box-shadow:0 0 0 4px rgba(99,102,241,.15)}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .btn{appearance:none;border:0;border-radius:14px;padding:12px 14px;font-size:14px;font-weight:1000;background:var(--primary);color:#fff;cursor:pointer;box-shadow:0 10px 20px rgba(37,99,235,.18)}
+    .btn.secondary{background:#fff;color:var(--text);border:1px solid var(--border);box-shadow:none}
+    .btn.ghost{background:transparent;color:var(--primary);border:1px dashed #c7d2fe;box-shadow:none}
+    .btn[disabled]{opacity:.5;cursor:not-allowed;transform:none}
+    .divider{height:1px;background:var(--border);margin:12px 0}
+    .step{display:none}
+    .step.active{display:block}
+
+    .checklist{display:grid;gap:10px;margin-top:10px}
+    .checkitem{display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:14px;border:1px solid var(--border);background:#fff}
+    .checkitem input{width:auto;margin-top:2px}
+    .checkitem b{font-size:13px;font-weight:1000}
+    .checkitem p{margin:4px 0 0;font-size:12px;color:var(--muted);line-height:1.45;font-weight:700}
+
+    .deviceList{display:grid;gap:10px}
+    .deviceCard{border:1px solid var(--border);border-radius:16px;background:#fff;padding:12px;display:grid;gap:8px}
+    .deviceTop{display:flex;justify-content:space-between;gap:12px;align-items:center;font-weight:1000}
+    .qtyRow{display:flex;gap:10px;align-items:center}
+    .qtyRow input{max-width:140px;text-align:right;font-variant-numeric:tabular-nums}
+    .muted{color:var(--muted);font-weight:800}
+    .ok{color:var(--ok);font-weight:1000}
+    .err{color:var(--danger);font-weight:1000}
+
+    .grandBox{margin-top:14px;padding:16px;border-radius:20px;border:1px solid #c7d2fe;background:linear-gradient(180deg,#eef2ff,#ffffff);text-align:center;box-shadow:var(--shadow)}
+    .grandTitle{font-weight:1000;font-size:15px}
+    .grandValue{margin-top:8px;font-size:36px;font-weight:1000;letter-spacing:.5px}
+
+    /* confirm overlay */
+    .confirmPage{display:none;position:fixed;inset:0;background:linear-gradient(180deg,#eef2ff,#f6f7fb);z-index:9999;overflow:auto;padding-bottom:90px}
+    .confirmWrap{max-width:860px;margin:0 auto;padding:14px}
+    .jpSection{margin-top:12px;background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+    .jpSecTitle{background:#eef2ff;border-bottom:1px solid #c7d2fe;padding:10px 12px;font-weight:1000}
+    .jpGrid{display:grid;grid-template-columns:140px 1fr;gap:8px 10px;padding:12px}
+    .jpLabel{color:var(--muted);font-weight:900;font-size:13px}
+    .jpVal{font-weight:1000;font-size:14px}
+    .jpList{padding:12px;display:grid;gap:10px}
+    .jpItem{display:flex;justify-content:space-between;gap:12px;font-weight:1000;border-bottom:1px dashed #e5e7eb;padding-bottom:8px}
+    .jpItem:last-child{border-bottom:0;padding-bottom:0}
+    .sendBar{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(180deg,#ffffffcc,#ffffff);border-top:1px solid var(--border);backdrop-filter:blur(10px);padding:10px 12px;z-index:10000}
+    .sendBar .inner{max-width:860px;margin:0 auto;display:flex;gap:10px;align-items:center}
+    .sendBtn{flex:1;height:52px;border-radius:16px;background:var(--primary);color:#fff;font-weight:1000;font-size:16px;border:0;box-shadow:0 12px 24px rgba(37,99,235,.22);cursor:pointer}
+    .sendBtn:disabled{opacity:.5;cursor:not-allowed}
+    .backBtn{height:52px;padding:0 16px;border-radius:16px;background:#fff;border:1px solid var(--border);font-weight:1000;cursor:pointer}
+  </style>
 </head>
+
 <body>
-<div class="container" id="app">
-    <!-- ヘッダー -->
-    <div class="page-header">
-        <div class="logo">NJFREGI</div>
-        <div class="small" style="font-size:12px;">新日本富士アシスト株式会社</div>
-        <div class="title">ご利用お申込み</div>
+<header>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="title">NJFREGI レジシステム申込フォーム</div>
+        <div class="sub">ステップ入力・自動計算・JSONP送信</div>
+      </div>
+      <div class="stepBlocks" id="stepBlocks">
+        <div class="sb" data-i="0">1</div>
+        <div class="sb" data-i="1">2</div>
+        <div class="sb" data-i="2">3</div>
+        <div class="sb" data-i="3">4</div>
+      </div>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Step 1 -->
+  <section class="card step active" id="step1">
+    <h2>重要事項確認（すべてチェック必須）</h2>
+    <div class="checklist" id="checks">
+      <div class="checkitem"><input type="checkbox" data-required="1"><div><b>契約期間は2年、満了後は1年ごとに自動更新</b><p>契約期間および自動更新ルールを理解しました。</p></div></div>
+      <div class="checkitem"><input type="checkbox" data-required="1"><div><b>利用開始日：機器の設置（設定含む）完了日</b><p>利用開始日は申込日より後になる場合があることを理解しました。</p></div></div>
+      <div class="checkitem"><input type="checkbox" data-required="1"><div><b>最低利用期間24ヶ月、途中解約は残期間費用が発生</b><p>途中解約時の費用ルールを理解しました。</p></div></div>
+      <div class="checkitem"><input type="checkbox" data-required="1"><div><b>推奨外機器の動作保証は対象外</b><p>推奨外機器の利用に伴う不具合はお客様責任となることを理解しました。</p></div></div>
+      <div class="checkitem"><input type="checkbox" data-required="1"><div><b>データ保存期間は最大24ヶ月（25ヶ月以降削除の可能性）</b><p>必要に応じてお客様側でバックアップが必要なことを理解しました。</p></div></div>
+      <div class="checkitem"><input type="checkbox" data-required="1"><div><b>解約は1ヶ月前までに書面で申請</b><p>解約手続き方法を理解しました。</p></div></div>
+      <div class="checkitem"><input type="checkbox" data-required="1"><div><b>個人情報の利用目的に同意</b><p>精算・注文処理、改善、問合せ対応、法令対応等。</p></div></div>
     </div>
 
-    <!-- ステップ表示 -->
-    <div class="step-indicator">
-        <span id="step1Label" class="active">入力</span>
-        <span id="step2Label">確認</span>
-        <span>完了</span>
+    <div class="row" style="margin-top:14px;">
+      <button class="btn" id="to2" disabled>次へ</button>
+    </div>
+    <div id="checkHint" style="margin-top:8px;font-weight:900;color:var(--muted);font-size:12px;">
+      上記の重要事項をすべてチェックしてください。
+    </div>
+  </section>
+
+  <!-- Step 2 -->
+  <section class="card step" id="step2">
+    <h2>基本情報（ご契約者）</h2>
+    <div class="grid cols2">
+      <div><label>申込日</label><input id="applyDate" type="date" readonly></div>
+      <div><label>顧客コード</label><input id="customerCode" readonly></div>
+      <div><label>社名 / 屋号 / 店舗名</label><input id="companyName" placeholder="例：株式会社BBC"></div>
+      <div><label>担当者名</label><input id="personName" placeholder="例：丹野 龍介"></div>
+      <div><label>携帯番号</label><input id="mobile" inputmode="tel" placeholder="090-xxxx-xxxx"></div>
+      <div><label>E-mail</label><input id="email" type="email" placeholder="name@example.com"></div>
     </div>
 
-    <!-- 入力画面 -->
-    <div id="inputSection">
-        <form id="inputForm" class="form-section">
-            <!-- 申込種別 -->
-            <div class="form-item">
-                <label>お申込種別 <span class="badge">必須</span></label>
-                <div class="radio-group">
-                    <label><input type="radio" name="applyType" value="法人" checked> 法人</label>
-                    <label><input type="radio" name="applyType" value="個人事業主"> 個人事業主</label>
-                </div>
-            </div>
+    <div class="divider"></div>
 
-            <!-- ===== 契約会社情報 ===== -->
-            <div class="section-title">■ 契約会社情報</div>
-            
-            <div class="form-item">
-                <label>会社名・屋号 <span class="badge">必須</span></label>
-                <input class="form-control" type="text" id="companyName" placeholder="NJF商事">
-            </div>
-            <div class="form-item">
-                <label>フリガナ <span class="badge">必須</span></label>
-                <input class="form-control" type="text" id="companyKana" placeholder="カ)ヤマダショウジ">
-            </div>
-            
-            <!-- 会社住所（郵便番号＋自動入力） -->
-            <div class="form-item">
-                <label>会社郵便番号 <span class="badge">必須</span></label>
-                <div class="zip-row">
-                    <input class="form-control" type="text" id="companyZip" placeholder="100-0005">
-                    <span class="zip-auto-btn" onclick="autoFillAddress('company')">自動入力</span>
-                </div>
-            </div>
-            <div class="form-item">
-                <label>会社住所 <span class="badge">必須</span></label>
-                <input class="form-control" type="text" id="companyAddr1" placeholder="都道府県 市区町村">
-            </div>
-            <div class="form-item">
-                <label>番地・建物名 <span class="badge">必須</span></label>
-                <input class="form-control" type="text" id="companyAddr2" placeholder="丸の内1-1-1 東京ビル5F" >
-            </div>
-
-            <!-- 担当者情報 -->
-            <div class="form-item">
-                <label>ご担当者様 <span class="badge">必須</span></label>
-                <div style="display: flex; gap: 8px;">
-                    <input class="form-control" type="text" id="contactLastName" placeholder="姓" style="width:50%;">
-                    <input class="form-control" type="text" id="contactFirstName" placeholder="名"  style="width:50%;">
-                </div>
-                <div style="display: flex; gap: 8px; margin-top: 6px;">
-                    <input class="form-control" type="text" id="contactLastNameKana" placeholder="セイ"  style="width:50%;">
-                    <input class="form-control" type="text" id="contactFirstNameKana" placeholder="メイ" style="width:50%;">
-                </div>
-            </div>
-
-            <div class="form-item">
-                <label>メールアドレス <span class="badge">必須</span></label>
-                <input class="form-control" type="email" id="email" placeholder="example@njfregi.co.jp" >
-            </div>
-            <div class="form-item">
-                <label>電話番号 <span class="badge">必須</span></label>
-                <input class="form-control" type="tel" id="phone" placeholder="03-1234-5678" >
-            </div>
-
-            <!-- ===== 利用店舗情報 ===== -->
-            <div class="section-title">■ 利用店舗情報</div>
-            
-            <!-- コピーボタン -->
-            <div style="text-align: right; margin-bottom: 10px;">
-                <span class="copy-btn" onclick="copyCompanyAddress()">📋 契約会社と同じ住所をコピー</span>
-            </div>
-
-            <div class="form-item">
-                <label>店舗名 <span class="badge">必須</span></label>
-                <input class="form-control" type="text" id="storeName" placeholder="NJF居酒屋 丸の内店">
-            </div>
-            <div class="form-item">
-                <label>店舗郵便番号 <span class="badge">必須</span></label>
-                <div class="zip-row">
-                    <input class="form-control" type="text" id="storeZip" placeholder="100-0005">
-                    <span class="zip-auto-btn" onclick="autoFillAddress('store')">自動入力</span>
-                </div>
-            </div>
-            <div class="form-item">
-                <label>店舗住所 <span class="badge">必須</span></label>
-                <input class="form-control" type="text" id="storeAddr1" placeholder="都道府県 市区町村">
-            </div>
-            <div class="form-item">
-                <label>番地・建物名 <span class="badge">必須</span></label>
-                <input class="form-control" type="text" id="storeAddr2" placeholder="丸の内1-1-1 東京ビル5F" >
-            </div>
-            <div class="form-item">
-                <label>店舗電話番号 <span class="badge">必須</span></label>
-                <input class="form-control" type="tel" id="storePhone" placeholder="03-1234-5678" >
-            </div>
-
-           <!-- 業態種類（新字段） -->
-<div class="form-item">
-    <label>業態種類<span class="badge">必須</span></label>
-    <textarea class="form-control" id="businessType" placeholder="例：居酒屋、中華料理、物産店"></textarea>
-</div>
-
-            <!-- 規約同意（クリックでモーダル表示） -->
-            <div class="terms-box">
-                <div class="terms-link-item" onclick="showModal('privacy')">
-                    <span>🔐 NJFREGI プライバシーポリシー</span>
-                    <span>›</span>
-                </div>
-                <div class="terms-link-item" onclick="showModal('terms')">
-                    <span>📑 NJFREGI 利用約款</span>
-                    <span>›</span>
-                </div>
-                <div class="agree-check">
-                    <input type="checkbox" id="agreeTerms" checked>
-                    <label for="agreeTerms">上記の規約に同意する</label>
-                </div>
-            </div>
-
-            <!-- 確認ボタン -->
-            <button type="button" class="submit-btn" onclick="goToConfirm()" id="toConfirmBtn">入力内容を確認する</button>
-        </form>
+    <h2>ご契約者住所</h2>
+    <div class="grid cols2">
+      <div><label>郵便番号（7桁）</label><input id="zipCompany" inputmode="numeric" placeholder="例：2730005"></div>
+      <div><label>住所（県市区町村）</label><input id="addrCompany1" placeholder="例：千葉県船橋市本町1丁目"></div>
+      <div style="grid-column:1/-1"><label>番地・建物名</label><input id="addrCompany2" placeholder="例：11-25 3F"></div>
     </div>
 
-    <!-- 確認画面 -->
-    <div id="confirmSection" class="hidden">
-        <div class="form-section">
-            <div class="section-title">■ 契約会社情報</div>
-            <div class="confirm-item">
-                <div class="confirm-item-label">会社名</div>
-                <div class="confirm-item-value" id="confirmCompanyName"></div>
-            </div>
-            <div class="confirm-item">
-                <div class="confirm-item-label">会社住所</div>
-                <div class="confirm-item-value" id="confirmCompanyAddr"></div>
-            </div>
-            <div class="confirm-item">
-                <div class="confirm-item-label">担当者</div>
-                <div class="confirm-item-value" id="confirmContact"></div>
-            </div>
-            <div class="confirm-item">
-                <div class="confirm-item-label">メールアドレス</div>
-                <div class="confirm-item-value" id="confirmEmail"></div>
-            </div>
-            <div class="confirm-item">
-                <div class="confirm-item-label">電話番号</div>
-                <div class="confirm-item-value" id="confirmPhone"></div>
-            </div>
-
-            <div class="section-title">■ 利用店舗情報</div>
-            <div class="confirm-item">
-                <div class="confirm-item-label">店舗名</div>
-                <div class="confirm-item-value" id="confirmStoreName"></div>
-            </div>
-            <div class="confirm-item">
-                <div class="confirm-item-label">店舗住所</div>
-                <div class="confirm-item-value" id="confirmStoreAddr"></div>
-            </div>
-            <div class="confirm-item">
-                <div class="confirm-item-label">店舗電話番号</div>
-                <div class="confirm-item-value" id="confirmStorePhone"></div>
-            </div>
-            
-            <div class="confirm-item">
-                <div class="confirm-item-label">ご利用目的</div>
-                <div class="confirm-item-value" id="confirmPurpose"></div>
-            </div>
-
-            <!-- 送信ボタン -->
-            <div class="button-group">
-                <button class="back-btn" onclick="backToInput()">戻る</button>
-                <button class="confirm-btn" onclick="submitForm()">この内容で送信する</button>
-            </div>
-        </div>
+    <div class="row" style="margin-top:14px;">
+      <button class="btn secondary" id="back1">戻る</button>
+      <button class="btn" id="to3">次へ</button>
     </div>
-</div>
+  </section>
 
-<!-- モーダル（プライバシーポリシー） -->
-<div id="privacyModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>🔐 NJFREGI プライバシーポリシー</h3>
-            <button class="modal-close" onclick="closeModal('privacy')">&times;</button>
-        </div>
-        <div class="modal-body">
-            <p><strong>新日本富士アシスト株式会社</strong>（以下「当社」といいます）は、当社が運営するシステム「NJFREGI」（以下「本システム」といいます）をご利用になる皆様（以下「ユーザー」といいます）の個人情報を、以下の方針に従って取り扱います。</p>
-            
-            <h4>1. 個人情報の取得</h4>
-            <p>当社は、ユーザーから直接ご提供いただく方法、または本システムのご利用状況などを通じて、個人情報を取得します。</p>
-            
-            <h4>2. 個人情報の利用目的</h4>
-            <p>当社は、取得した個人情報を以下の目的で利用します。</p>
-            <ul>
-                <li>本システムの運営、維持、およびユーザーからのお問い合わせ対応のため</li>
-                <li>本システムの不正利用防止、および安全な運営を確保するため</li>
-                <li>本システムの改善、新機能の開発のための分析のため</li>
-                <li>本システムや関連するキャンペーンなどの情報をご案内するため（ユーザーが希望しない場合は、配信を停止できます）</li>
-            </ul>
-            
-            <h4>3. 個人情報の第三者への提供</h4>
-            <p>当社は、以下のいずれかに該当する場合を除き、ユーザーの個人情報を第三者に提供しません。</p>
-            <ul>
-                <li>ユーザーの同意がある場合</li>
-                <li>法令に基づき開示が求められた場合</li>
-                <li>人の生命、身体または財産の保護のために必要がある場合</li>
-                <li>本システムの運営に必要な業務（決済処理、データ分析など）を委託する場合（この場合、委託先とは適切な契約を結び、監督します）</li>
-            </ul>
-            
-            <h4>4. 個人情報の管理</h4>
-            <p>当社は、ユーザーの個人情報を正確かつ最新の状態に保ち、不正アクセス、漏洩、滅失、き損などを防ぐため、必要かつ適切な安全対策を実施します。</p>
-            
-            <h4>5. 個人情報の開示等</h4>
-            <p>ユーザーは、ご自身の個人情報について、利用目的の通知、開示、訂正、追加、削除、または利用停止などを請求することができます。請求の方法については、下記お問い合わせ先までご連絡ください。</p>
-            
-            <h4>6. お問い合わせ先</h4>
-            <p>新日本富士アシスト株式会社<br>〒110-0016 東京都台東区台東4-31-7-203<br>Email: info@njfregi.jp</p>
-        </div>
+  <!-- Step 3 -->
+  <section class="card step" id="step3">
+    <h2>設置先 / 請求先</h2>
+
+    <div class="row" style="margin-bottom:10px">
+      <button class="btn ghost" id="copyCompanyToInstall" type="button">同上：ご契約者住所を設置先へ</button>
     </div>
-</div>
 
-<!-- モーダル（利用約款） -->
-<div id="termsModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>📑 NJFREGI 利用約款</h3>
-            <button class="modal-close" onclick="closeModal('terms')">&times;</button>
-        </div>
-        <div class="modal-body">
-            <p>この利用約款（以下「本約款」といいます）は、<strong>新日本富士アシスト株式会社</strong>（以下「当社」といいます）が提供するシステム「NJFREGI」（以下「本システム」といいます）の利用に関する条件を定めるものです。ユーザー（以下「お客様」といいます）は、本約款に同意の上、本システムをご利用いただきます。</p>
-            
-            <h4>第1条（適用）</h4>
-            <p>本約款は、お客様と当社との間の本システムの利用に関する一切の関係に適用されます。お客様が本システムを利用した時点で、本約款に同意したものとみなします。</p>
-            
-            <h4>第2条（アカウントの管理）</h4>
-            <p>1. お客様は、自己の責任において、本システムのアカウント（ID・パスワード）を管理するものとします。<br>
-            2. アカウントの不正使用など、お客様の管理不備によって生じた損害について、当社は責任を負いません。<br>
-            3. アカウントは、お客様自身のみが利用できるものとし、第三者への譲渡、貸与、または共有はできません。</p>
-            
-            <h4>第3条（禁止事項）</h4>
-            <p>お客様は、本システムの利用にあたり、以下の行為を行ってはなりません。</p>
-            <ul>
-                <li>法令または公序良俗に違反する行為</li>
-                <li>当社または第三者の著作権、プライバシーなど権利を侵害する行為</li>
-                <li>本システムの運営を妨害する行為、またはサーバーに過度な負担をかける行為</li>
-                <li>不正アクセス、またはリバースエンジニアリングなど、本システムを解析する行為</li>
-                <li>虚偽の情報を登録する行為</li>
-                <li>その他、当社が不適切と判断する行為</li>
-            </ul>
-            
-            <h4>第4条（サービスの変更・停止・終了）</h4>
-            <p>1. 当社は、お客様に事前に通知することなく、本システムの内容を変更、または提供を停止・終了することがあります。<br>
-            2. 当社は、天災地変、システム障害など、やむを得ない事由により本システムの提供が遅延、または不能となった場合、お客様に生じた損害について責任を負いません。</p>
-            
-            <h4>第5条（免責事項）</h4>
-            <p>1. 当社は、本システムの機能がお客様の特定の目的に適合すること、または中断せず安定的に提供されることを保証しません。<br>
-            2. 当社は、本システムの利用、または利用できなかったことによってお客様に生じた一切の損害（通常損害、特別損害、逸失利益を含む）について、当社の故意または重過失がある場合を除き、責任を負いません。</p>
-            
-            <h4>第6条（契約期間と解約）</h4>
-            <p>1. 本約款に基づく契約の期間は、お客様が本システムの利用を開始した日から、お客様が利用を終了するまでとします。<br>
-            2. お客様は、当社所定の方法により、いつでも本システムの利用を終了（アカウント削除）することができます。</p>
-            
-            <h4>第7条（約款の変更）</h4>
-            <p>当社は、必要に応じて本約款を変更することがあります。変更後の約款は、当社が別途定める場合を除き、本システム上に表示された時点から効力を生じるものとします。</p>
-            
-            <h4>第8条（準拠法と管轄裁判所）</h4>
-            <p>本約款の解釈には日本法が適用されます。また、本システムに関して紛争が生じた場合には、東京地方裁判所を第一審の専属的合意管轄裁判所とします。</p>
-            
-            <p style="margin-top:16px;">以上</p>
-        </div>
+    <div class="grid cols2">
+      <div><label>設置先名称</label><input id="installName" placeholder="例：麻辣湯倶楽部"></div>
+      <div><label>電話番号</label><input id="installTel" inputmode="tel" placeholder="例：047-xxx-xxxx"></div>
+      <div><label>郵便番号（7桁）</label><input id="zipInstall" inputmode="numeric" placeholder="例：2730005"></div>
+      <div><label>住所（県市区町村）</label><input id="addrInstall1" placeholder=""></div>
+      <div style="grid-column:1/-1"><label>番地・建物名</label><input id="addrInstall2" placeholder=""></div>
+
+      <div><label>営業時間</label><input id="bizHours" value="11:00-23:00"></div>
+      <div><label>定休日</label><input id="holiday" value="なし"></div>
     </div>
-</div>
 
-<!-- フッター（会社名＋住所） -->
-<div class="company-name">
-    <div class="name">新日本富士アシスト株式会社</div>
-    <div class="address">〒110-0016 東京都台東区台東4-31-7-203</div>
-</div>
+    <div class="divider"></div>
+
+    <div class="row" style="margin-bottom:10px">
+      <button class="btn ghost" id="copyInstallToBill" type="button">同上：設置先を請求先へ</button>
+    </div>
+
+    <div class="grid cols2">
+      <div><label>請求先名称</label><input id="billName" placeholder="例：麻辣湯倶楽部"></div>
+      <div><label>支払方法</label><input id="payMethod" value="銀行振込" readonly></div>
+
+      <div><label>郵便番号（7桁）</label><input id="zipBill" inputmode="numeric" placeholder="例：2730005"></div>
+      <div><label>住所（県市区町村）</label><input id="addrBill1" placeholder=""></div>
+      <div style="grid-column:1/-1"><label>番地・建物名</label><input id="addrBill2" placeholder=""></div>
+
+      <div><label>課金開始日</label><input id="chargeStart" type="date" readonly></div>
+      <div><label>請求期間</label><input id="billingTerm" readonly></div>
+    </div>
+
+    <div class="row" style="margin-top:14px;">
+      <button class="btn secondary" id="back2">戻る</button>
+      <button class="btn" id="to4">次へ</button>
+    </div>
+  </section>
+
+  <!-- Step 4 -->
+  <section class="card step" id="step4">
+    <h2>機器・サービス</h2>
+
+    <div class="divider"></div>
+    <h2>初期費用（機器）</h2>
+    <div class="deviceList" id="deviceList"></div>
+
+    <div class="divider"></div>
+    <h2>利用料</h2>
+    <div class="deviceCard">
+      <div class="deviceTop">
+        <div>基本利用料</div>
+        <div class="price" id="recPriceText">月額 ¥ 8,800（税込）</div>
+      </div>
+      <div class="qtyRow">
+        <label style="margin:0;width:140px;font-weight:1000;color:var(--muted)">プラン</label>
+        <select id="recPlan">
+          <option value="monthly" selected>月額 8,800（税込）</option>
+          <option value="yearly">年額 88,000（税込）</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grandBox">
+      <div class="grandTitle">完工時お支払額（合計）</div>
+      <div class="grandValue" id="grand">¥ 0</div>
+      <div class="muted" id="grandSub" style="margin-top:6px;font-size:12px;"></div>
+    </div>
+
+    <div class="row" style="margin-top:14px;">
+      <button class="btn secondary" id="back3">戻る</button>
+      <button class="btn" id="goConfirm">申込内容を確認</button>
+    </div>
+
+    <div id="submitMsg" class="muted" style="margin-top:10px;font-size:12px;"></div>
+  </section>
+</main>
+
+<!-- Confirm Overlay -->
+<section class="confirmPage" id="confirmPage" aria-hidden="true">
+  <div class="confirmWrap">
+    <div class="jpSection">
+      <div class="jpSecTitle">ご契約者</div>
+      <div class="jpGrid" id="c_contract"></div>
+    </div>
+    <div class="jpSection">
+      <div class="jpSecTitle">設置先</div>
+      <div class="jpGrid" id="c_install"></div>
+    </div>
+    <div class="jpSection">
+      <div class="jpSecTitle">請求先</div>
+      <div class="jpGrid" id="c_bill"></div>
+    </div>
+    <div class="jpSection">
+      <div class="jpSecTitle">初期費用（機器）</div>
+      <div class="jpList" id="c_init"></div>
+    </div>
+    <div class="jpSection">
+      <div class="jpSecTitle">利用料</div>
+      <div class="jpGrid" id="c_rec"></div>
+    </div>
+    <div class="grandBox">
+      <div class="grandTitle">完工時お支払額（合計）</div>
+      <div class="grandValue" id="c_grand">-</div>
+    </div>
+  </div>
+
+  <div class="sendBar">
+    <div class="inner">
+      <button class="backBtn" id="confirmBack">戻る</button>
+      <button class="sendBtn" id="sendBtn">送信</button>
+    </div>
+  </div>
+</section>
 
 <script>
-    // ==================== 郵便番号自動入力（実際のAPI使用）====================
-    function autoFillAddress(type) {
-        const zip = document.getElementById(type + 'Zip').value.replace('-', '');
-        
-        if (zip.length < 7) {
-            alert('郵便番号は7桁で入力してください');
-            return;
+  /***************
+   * 必須設定
+   ***************/
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbxLJVYOFTcY0bE7x9Xr0MiXliZLG2gzIJD6R0WzzShsw8K1entp0bTaojNw7MwJSKEd7w/exec"; // 例：https://script.google.com/macros/s/XXXX/exec
+  const API_KEY = "NJFREGI-8F3XK29S9DKD73KDJF9283JDKS9DK2";
+  const TAX_RATE = 0.10;
+
+  /***************
+   * Step control
+   ***************/
+  const steps = ["step1","step2","step3","step4"].map(id=>document.getElementById(id));
+  let stepIndex = 0;
+  const bar = document.getElementById("bar");
+  const stepBlocks = [...document.querySelectorAll("#stepBlocks .sb")];
+
+  function setStep(i){
+    stepIndex = Math.max(0, Math.min(steps.length-1, i));
+    steps.forEach((s,idx)=>s.classList.toggle("active", idx===stepIndex));
+    stepBlocks.forEach((b, idx) => {
+      b.classList.toggle("done", idx < stepIndex);
+      b.classList.toggle("active", idx === stepIndex);
+    });
+    bar.style.width = `${(stepIndex)/(steps.length-1)*100}%`;
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+  setStep(0);
+
+  /***************
+   * Step1 checklist gate
+   ***************/
+  const checks = [...document.querySelectorAll("#checks input[type=checkbox][data-required='1']")];
+  const to2 = document.getElementById("to2");
+  const checkHint = document.getElementById("checkHint");
+  function refreshChecklist(){
+    const ok = checks.every(c=>c.checked);
+    to2.disabled = !ok;
+    checkHint.innerHTML = ok ? `<span class="ok">確認が完了しました。次へ進めます。</span>` : `上記の重要事項をすべてチェックしてください。`;
+  }
+  checks.forEach(c=>c.addEventListener("change", refreshChecklist));
+  refreshChecklist();
+
+  to2.addEventListener("click", ()=>setStep(1));
+  document.getElementById("back1").addEventListener("click", ()=>setStep(0));
+  document.getElementById("to3").addEventListener("click", ()=>setStep(2));
+  document.getElementById("back2").addEventListener("click", ()=>setStep(1));
+  document.getElementById("to4").addEventListener("click", ()=>setStep(3));
+  document.getElementById("back3").addEventListener("click", ()=>setStep(2));
+
+  /***************
+   * Defaults
+   ***************/
+  function pad2(n){ return String(n).padStart(2,"0"); }
+  function formatYMD(d){ return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`; }
+  function formatYYYYMMDD(d){ return `${d.getFullYear()}${pad2(d.getMonth()+1)}${pad2(d.getDate())}`; }
+  function nextMonthFirst(d){ return new Date(d.getFullYear(), d.getMonth()+1, 1); }
+  function formatTerm(startDate){
+    const s = startDate;
+    const e = new Date(s.getFullYear()+1, s.getMonth(), s.getDate()-1);
+    return `${formatYMD(s)} ～ ${formatYMD(e)}`;
+  }
+
+  const today = new Date();
+  document.getElementById("applyDate").value = formatYMD(today);
+  document.getElementById("customerCode").value = `${formatYYYYMMDD(today)}001`;
+
+  const chargeStartEl = document.getElementById("chargeStart");
+  const billingTermEl = document.getElementById("billingTerm");
+  const cs = nextMonthFirst(today);
+  chargeStartEl.value = formatYMD(cs);
+  billingTermEl.value = formatTerm(cs);
+
+  /***************
+   * Copy
+   ***************/
+  document.getElementById("copyCompanyToInstall").addEventListener("click", ()=>{
+    document.getElementById("zipInstall").value = document.getElementById("zipCompany").value;
+    document.getElementById("addrInstall1").value = document.getElementById("addrCompany1").value;
+    document.getElementById("addrInstall2").value = document.getElementById("addrCompany2").value;
+    document.getElementById("installName").value = document.getElementById("companyName").value || "";
+  });
+  document.getElementById("copyInstallToBill").addEventListener("click", ()=>{
+    document.getElementById("zipBill").value = document.getElementById("zipInstall").value;
+    document.getElementById("addrBill1").value = document.getElementById("addrInstall1").value;
+    document.getElementById("addrBill2").value = document.getElementById("addrInstall2").value;
+    document.getElementById("billName").value = document.getElementById("installName").value || "";
+  });
+
+  /***************
+   * Money
+   ***************/
+  function fmtJPY(n){
+    const v = Math.round(Number(n||0));
+    return "¥ " + String(v).replace(/\B(?=(\d{3})+(?!\d))/g,",");
+  }
+
+  /***************
+   * Devices
+   ***************/
+  const devices = [
+    { key:"register", name:"レジスター", unitInc: 99000, qty: 1 },
+    { key:"tablet", name:"タブレット", unitInc: 32900, qty: 0 },
+    { key:"kds", name:"キッチンモニター", unitInc: 66000, qty: 0 },
+    { key:"printer", name:"プリンター", unitInc: 33000, qty: 0 },
+    { key:"drawer", name:"キャッシュドロア", unitInc: 22000, qty: 0 },
+  ];
+  const deviceListEl = document.getElementById("deviceList");
+
+  function renderDevices(){
+    deviceListEl.innerHTML = "";
+    devices.forEach((it, idx)=>{
+      const card = document.createElement("div");
+      card.className = "deviceCard";
+      card.innerHTML = `
+        <div class="deviceTop">
+          <div>${it.name}</div>
+          <div class="price">${fmtJPY(it.unitInc)}（税込）</div>
+        </div>
+        <div class="qtyRow">
+          <label style="margin:0;width:140px;font-weight:1000;color:var(--muted)">数量</label>
+          <input type="number" min="0" step="1" value="${it.qty}" data-i="${idx}">
+        </div>
+      `;
+      deviceListEl.appendChild(card);
+    });
+
+    deviceListEl.querySelectorAll("input[data-i]").forEach(inp=>{
+      inp.addEventListener("input", ()=>{
+        const i = Number(inp.dataset.i);
+        const v = parseInt(inp.value, 10);
+        devices[i].qty = (isNaN(v) || v < 0) ? 0 : v;
+        calcGrand();
+      });
+      inp.addEventListener("blur", ()=>{
+        if(inp.value === "" || isNaN(parseInt(inp.value,10))){
+          inp.value = "0";
+          const i = Number(inp.dataset.i);
+          devices[i].qty = 0;
+          calcGrand();
         }
-        
-        // ボタンのテキストを一時的に変更
-        const btn = event.target;
-        const originalText = btn.innerText;
-        btn.innerText = '検索中...';
-        
-        // 日本の郵便番号APIを使用
-        fetch('https://zipcloud.ibsnet.co.jp/api/search?zipcode=' + zip)
-            .then(response => response.json())
-            .then(data => {
-                btn.innerText = originalText;
-                
-                if (data.results) {
-                    const result = data.results[0];
-                    const address = result.address1 + result.address2 + result.address3;
-                    document.getElementById(type + 'Addr1').value = address;
-                    document.getElementById(type + 'Addr2').value = ''; // 番地・建物は空に
-                } else {
-                    alert('住所が見つかりませんでした。郵便番号を確認してください。');
-                }
-            })
-            .catch(error => {
-                btn.innerText = originalText;
-                alert('住所検索に失敗しました。もう一度お試しください。');
-                console.error(error);
-            });
+      });
+    });
+
+    calcGrand();
+  }
+
+  /***************
+   * Rec plan
+   ***************/
+  const recPlanEl = document.getElementById("recPlan");
+  const recPriceText = document.getElementById("recPriceText");
+
+  function getRecPlan(){
+    if(recPlanEl.value === "yearly"){
+      return { plan:"年額", priceInc: 88000 };
+    }
+    return { plan:"月額", priceInc: 8800 };
+  }
+  recPlanEl.addEventListener("change", ()=>{
+    const p = getRecPlan();
+    recPriceText.textContent = `${p.plan} ${fmtJPY(p.priceInc)}（税込）`;
+    calcGrand();
+  });
+
+  function calcGrand(){
+    const initTotal = devices.reduce((a,it)=>a + (Number(it.qty)||0)*(Number(it.unitInc)||0), 0);
+    const rp = getRecPlan();
+    const grand = initTotal + (Number(rp.priceInc)||0);
+    document.getElementById("grand").textContent = fmtJPY(grand);
+    document.getElementById("grandSub").textContent = `初期費用 ${fmtJPY(initTotal)} + 利用料 ${fmtJPY(rp.priceInc)}`;
+  }
+
+  /***************
+   * Build payload
+   ***************/
+  function buildPayload(){
+    const rp = getRecPlan();
+    const initItems = devices
+      .map(d=>({ name:d.name, qty:d.qty, unitInc:d.unitInc }))
+      .filter(x => (x.qty||0) > 0);
+
+    return {
+      apiKey: API_KEY,
+      applyDate: document.getElementById("applyDate").value,
+      customerCode: document.getElementById("customerCode").value,
+
+      companyName: (document.getElementById("companyName").value||"").trim(),
+      personName: (document.getElementById("personName").value||"").trim(),
+      mobile: (document.getElementById("mobile").value||"").trim(),
+      email: (document.getElementById("email").value||"").trim(),
+
+      zipCompany: (document.getElementById("zipCompany").value||"").trim(),
+      addrCompany1: (document.getElementById("addrCompany1").value||"").trim(),
+      addrCompany2: (document.getElementById("addrCompany2").value||"").trim(),
+
+      installName: (document.getElementById("installName").value||"").trim(),
+      installTel: (document.getElementById("installTel").value||"").trim(),
+      zipInstall: (document.getElementById("zipInstall").value||"").trim(),
+      addrInstall1: (document.getElementById("addrInstall1").value||"").trim(),
+      addrInstall2: (document.getElementById("addrInstall2").value||"").trim(),
+      bizHours: (document.getElementById("bizHours").value||"").trim(),
+      holiday: (document.getElementById("holiday").value||"").trim(),
+
+      billName: (document.getElementById("billName").value||"").trim(),
+      payMethod: "銀行振込",
+      zipBill: (document.getElementById("zipBill").value||"").trim(),
+      addrBill1: (document.getElementById("addrBill1").value||"").trim(),
+      addrBill2: (document.getElementById("addrBill2").value||"").trim(),
+
+      chargeStart: document.getElementById("chargeStart").value,
+      billingTerm: document.getElementById("billingTerm").value,
+
+      taxRate: TAX_RATE,
+      initItems,
+      recPlan: rp,
+    };
+  }
+
+  /***************
+   * Confirm overlay render
+   ***************/
+  const confirmPage = document.getElementById("confirmPage");
+  function addrLine(z,a1,a2){
+    return `〒${(z||"")} ${(a1||"")} ${(a2||"")}`.replace(/\s+/g," ").trim();
+  }
+
+  document.getElementById("goConfirm").addEventListener("click", ()=>{
+    const p = buildPayload();
+
+    const c_contract = document.getElementById("c_contract");
+    const c_install  = document.getElementById("c_install");
+    const c_bill     = document.getElementById("c_bill");
+    const c_init     = document.getElementById("c_init");
+    const c_rec      = document.getElementById("c_rec");
+
+    c_contract.innerHTML = "";
+    [
+      ["申込日", p.applyDate],
+      ["顧客コード", p.customerCode],
+      ["社名/屋号", p.companyName || "未入力"],
+      ["担当者", p.personName || "未入力"],
+      ["携帯", p.mobile || "未入力"],
+      ["E-mail", p.email || "未入力"],
+      ["住所", addrLine(p.zipCompany, p.addrCompany1, p.addrCompany2) || "未入力"],
+    ].forEach(([k,v])=>{
+      c_contract.insertAdjacentHTML("beforeend", `<div class="jpLabel">${k}</div><div class="jpVal">${v}</div>`);
+    });
+
+    c_install.innerHTML = "";
+    [
+      ["名称", p.installName || "未入力"],
+      ["電話", p.installTel || "未入力"],
+      ["住所", addrLine(p.zipInstall, p.addrInstall1, p.addrInstall2) || "未入力"],
+      ["営業時間", p.bizHours || "未入力"],
+      ["定休日", p.holiday || "未入力"],
+    ].forEach(([k,v])=>{
+      c_install.insertAdjacentHTML("beforeend", `<div class="jpLabel">${k}</div><div class="jpVal">${v}</div>`);
+    });
+
+    c_bill.innerHTML = "";
+    [
+      ["名称", p.billName || "未入力"],
+      ["支払方法", p.payMethod],
+      ["住所", addrLine(p.zipBill, p.addrBill1, p.addrBill2) || "未入力"],
+      ["課金開始日", p.chargeStart || "未入力"],
+      ["請求期間", p.billingTerm || "未入力"],
+    ].forEach(([k,v])=>{
+      c_bill.insertAdjacentHTML("beforeend", `<div class="jpLabel">${k}</div><div class="jpVal">${v}</div>`);
+    });
+
+    c_init.innerHTML = "";
+    if(!p.initItems.length){
+      c_init.innerHTML = `<div class="jpItem"><div>選択された機器はありません</div><div>¥ 0</div></div>`;
+    }else{
+      p.initItems.forEach(it=>{
+        const sub = (Number(it.qty)||0)*(Number(it.unitInc)||0);
+        c_init.insertAdjacentHTML("beforeend",
+          `<div class="jpItem"><div>${it.name}　${fmtJPY(it.unitInc)} × ${it.qty}</div><div>${fmtJPY(sub)}</div></div>`
+        );
+      });
     }
 
-    // ==================== 会社住所を店舗にコピー ====================
-    function copyCompanyAddress() {
-        document.getElementById('storeZip').value = document.getElementById('companyZip').value;
-        document.getElementById('storeAddr1').value = document.getElementById('companyAddr1').value;
-        document.getElementById('storeAddr2').value = document.getElementById('companyAddr2').value;
-    }
+    c_rec.innerHTML = "";
+    c_rec.insertAdjacentHTML("beforeend",
+      `<div class="jpLabel">基本利用料</div><div class="jpVal">${p.recPlan.plan}　${fmtJPY(p.recPlan.priceInc)}</div>`
+    );
 
-    // ==================== モーダル表示/非表示 ====================
-    function showModal(type) {
-        document.getElementById(type + 'Modal').style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
+    const initTotal = p.initItems.reduce((a,it)=>a+(Number(it.qty)||0)*(Number(it.unitInc)||0),0);
+    const grand = initTotal + (Number(p.recPlan.priceInc)||0);
+    document.getElementById("c_grand").textContent = fmtJPY(grand);
 
-    function closeModal(type) {
-        document.getElementById(type + 'Modal').style.display = 'none';
-        document.body.style.overflow = '';
-    }
+    confirmPage.style.display = "block";
+    confirmPage.setAttribute("aria-hidden","false");
+    window.scrollTo({top:0, behavior:"instant"});
+  });
 
-    // モーダル外クリックで閉じる
-    window.onclick = function(event) {
-        if (event.target.classList.contains('modal')) {
-            event.target.style.display = 'none';
-            document.body.style.overflow = '';
-        }
-    }
+  document.getElementById("confirmBack").addEventListener("click", ()=>{
+    confirmPage.style.display = "none";
+    confirmPage.setAttribute("aria-hidden","true");
+  });
 
-  // ==================== 输入画面 → 确认画面（调试版）====================
-function goToConfirm() {
-    console.log('===== 开始执行 goToConfirm =====');
-    
-    // 检查所有必需元素是否存在
-    const requiredIds = [
-        'companyName', 'companyKana', 'companyZip', 'companyAddr1', 'companyAddr2',
-        'contactLastName', 'contactFirstName', 'email', 'phone',
-        'storeName', 'storeZip', 'storeAddr1', 'storeAddr2', 'storePhone'
-    ];
-    
-    // 检查每个元素是否存在
-    for (let id of requiredIds) {
-        const el = document.getElementById(id);
-        if (!el) {
-            console.error('错误：找不到元素 id=' + id);
-            alert('系统错误：找不到输入框 ' + id);
-            return;
-        }
-        console.log('✅ 找到元素：' + id + ' = ' + el.value);
-    }
-    
-    // 检查同意复选框
-    const agreeEl = document.getElementById('agreeTerms');
-    if (!agreeEl) {
-        console.error('错误：找不到 agreeTerms 元素');
-        alert('系统错误：找不到同意复选框');
+  /***************
+   * JSONP SEND (no CORS)
+   ***************/
+  const sendBtn = document.getElementById("sendBtn");
+
+  function jsonpSend(url, payload, timeoutMs=12000){
+    return new Promise((resolve, reject)=>{
+      const callbackName = "jsonp_cb_" + Date.now() + "_" + Math.floor(Math.random()*1000);
+      const script = document.createElement("script");
+      const params = new URLSearchParams();
+      params.append("callback", callbackName);
+
+      Object.keys(payload).forEach(k=>{
+        const v = payload[k];
+        if (typeof v === "object") params.append(k, JSON.stringify(v));
+        else params.append(k, v ?? "");
+      });
+
+      // ⚠️ URL过长风险：简单保护
+      const fullUrl = url + "?" + params.toString();
+      if(fullUrl.length > 7000){
+        reject(new Error("送信データが大きすぎます（URLが長すぎる）。項目を減らしてください。"));
         return;
+      }
+
+      let timer = setTimeout(()=>{
+        cleanup();
+        reject(new Error("送信がタイムアウトしました"));
+      }, timeoutMs);
+
+      function cleanup(){
+        clearTimeout(timer);
+        try{ delete window[callbackName]; }catch(e){}
+        script.remove();
+      }
+
+      window[callbackName] = (resp)=>{
+        cleanup();
+        resolve(resp);
+      };
+
+      script.onerror = ()=>{
+        cleanup();
+        reject(new Error("サーバーに接続できません（ネットワーク/URL）"));
+      };
+
+      script.src = fullUrl;
+      document.body.appendChild(script);
+    });
+  }
+
+  sendBtn.addEventListener("click", async ()=>{
+    sendBtn.disabled = true;
+    sendBtn.textContent = "送信中…";
+
+    try{
+      const payload = buildPayload();
+      const resp = await jsonpSend(GAS_URL, payload);
+
+      if(resp && resp.ok === true && resp.appId){
+        // ✅ 成功后：跳转到 GAS confirm 页面（注意：不要带 callback）
+        window.location.href = GAS_URL + "?page=confirm&appId=" + encodeURIComponent(resp.appId);
+        return;
+      }
+
+      throw new Error(resp?.error || "送信に失敗しました");
+
+    }catch(err){
+      alert("送信に失敗しました。\n" + (err && err.message ? err.message : String(err)));
+      sendBtn.disabled = false;
+      sendBtn.textContent = "送信";
     }
-    
-    // 检查确认画面元素
-    const confirmIds = [
-        'confirmCompanyName', 'confirmCompanyAddr', 'confirmContact',
-        'confirmEmail', 'confirmPhone', 'confirmStoreName',
-        'confirmStoreAddr', 'confirmStorePhone', 'confirmPurpose'
-    ];
-    
-    for (let id of confirmIds) {
-        const el = document.getElementById(id);
-        if (!el) {
-            console.error('错误：找不到确认画面元素 id=' + id);
-            alert('系统错误：找不到确认画面元素 ' + id);
-            return;
-        }
-    }
-    
-    // 验证通过，开始填充确认画面
-    console.log('所有元素检查通过，开始填充确认画面');
-    
-    // 契约会社情報
-    document.getElementById('confirmCompanyName').innerText = 
-        document.getElementById('companyName').value + '（' + document.getElementById('companyKana').value + '）';
-    
-    document.getElementById('confirmCompanyAddr').innerText = 
-        '〒' + document.getElementById('companyZip').value + ' ' + 
-        document.getElementById('companyAddr1').value + ' ' + 
-        document.getElementById('companyAddr2').value;
-    
-    document.getElementById('confirmContact').innerText = 
-        document.getElementById('contactLastName').value + ' ' + 
-        document.getElementById('contactFirstName').value + ' 様' +
-        '（' + document.getElementById('contactLastNameKana').value + ' ' + 
-        document.getElementById('contactFirstNameKana').value + '）';
-    
-    document.getElementById('confirmEmail').innerText = document.getElementById('email').value;
-    document.getElementById('confirmPhone').innerText = document.getElementById('phone').value;
+  });
 
-    // 店舗情報
-    document.getElementById('confirmStoreName').innerText = document.getElementById('storeName').value;
-    document.getElementById('confirmStoreAddr').innerText = 
-        '〒' + document.getElementById('storeZip').value + ' ' + 
-        document.getElementById('storeAddr1').value + ' ' + 
-        document.getElementById('storeAddr2').value;
-    document.getElementById('confirmStorePhone').innerText = document.getElementById('storePhone').value;
-    document.getElementById('confirmPurpose').innerText = document.getElementById('purpose').value || '（記載なし）';
-
-    // 画面切替
-    console.log('准备切换画面');
-    document.getElementById('inputSection').classList.add('hidden');
-    document.getElementById('confirmSection').classList.remove('hidden');
-    document.getElementById('step1Label').classList.remove('active');
-    document.getElementById('step2Label').classList.add('active');
-    
-    console.log('画面切换完成');
-}
-
-    // ==================== 確認画面 → 入力画面 ====================
-    function backToInput() {
-        document.getElementById('inputSection').classList.remove('hidden');
-        document.getElementById('confirmSection').classList.add('hidden');
-        document.getElementById('step1Label').classList.add('active');
-        document.getElementById('step2Label').classList.remove('active');
-    }
-
-    // ==================== 最終送信（GASにデータ送信）====================
-    function submitForm() {
-        const data = {
-            applyType: document.querySelector('input[name="applyType"]:checked').value,
-            company: {
-                name: document.getElementById('companyName').value,
-                kana: document.getElementById('companyKana').value,
-                zip: document.getElementById('companyZip').value,
-                addr1: document.getElementById('companyAddr1').value,
-                addr2: document.getElementById('companyAddr2').value
-            },
-            contact: {
-                lastName: document.getElementById('contactLastName').value,
-                firstName: document.getElementById('contactFirstName').value,
-                lastNameKana: document.getElementById('contactLastNameKana').value,
-                firstNameKana: document.getElementById('contactFirstNameKana').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value
-            },
-            store: {
-                name: document.getElementById('storeName').value,
-                zip: document.getElementById('storeZip').value,
-                addr1: document.getElementById('storeAddr1').value,
-                addr2: document.getElementById('storeAddr2').value,
-                phone: document.getElementById('storePhone').value
-            },
-            purpose: document.getElementById('purpose').value
-        };
-
-        // 送信ボタンを無効化
-        const btn = event.target;
-        btn.disabled = true;
-        btn.innerText = '送信中...';
-
-        // GASのURL（あなたのGASのURLに変更してください）
-        const gasUrl = 'https://script.google.com/macros/s/AKfycbzyoEvErklb24uBp3UvVKoKbY5xbW8TqK80mL95KRMmfgMWyg5YYt5sozS3gAzkmJ1X8w/exec';
-
-        // デモモード：GASがなくても動作確認できるように
-        if (gasUrl.includes('【ここに')) {
-            setTimeout(() => {
-                alert('【デモモード】送信が完了しました。\n\n実際の運用時はGASのURLを設定してください。');
-                backToInput();
-                btn.disabled = false;
-                btn.innerText = 'この内容で送信する';
-            }, 1000);
-            return;
-        }
-
-        fetch(gasUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        })
-        .then(() => {
-            alert('送信が完了しました。ご登録ありがとうございます。');
-            backToInput();
-            btn.disabled = false;
-            btn.innerText = 'この内容で送信する';
-        })
-        .catch(error => {
-            alert('エラーが発生しました。もう一度お試しください。');
-            console.error(error);
-            btn.disabled = false;
-            btn.innerText = 'この内容で送信する';
-        });
-    }
+  // init
+  renderDevices();
+  const rp = getRecPlan();
+  recPriceText.textContent = `${rp.plan} ${fmtJPY(rp.priceInc)}（税込）`;
+  calcGrand();
 </script>
 </body>
 </html>
